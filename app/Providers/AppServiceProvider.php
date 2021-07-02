@@ -2,7 +2,10 @@
 
 namespace App\Providers;
 
+use Carbon\Carbon;
 use Illuminate\Support\ServiceProvider;
+use Faker\Generator as FakerGenerator;
+use Faker\Factory as FakerFactory;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -13,7 +16,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        $this->app->singleton(FakerGenerator::class, function () {
+            return FakerFactory::create('de_DE');
+        });
+
     }
 
     /**
@@ -23,6 +29,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        // Localization Carbon
+        Carbon::setLocale('de');
     }
 }

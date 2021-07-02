@@ -7,56 +7,5 @@
 // Bootstrap
 @import '~bootstrap/scss/bootstrap';
 
-.obb-open {
-    color:#429398;
-    font-family: "old_standard_ttbold", Georgia, serif;
-    font-size: 1.2em;
-    background: #fff;
-    padding: 8px 5px 3px;
-    text-shadow: 0 1px 0 #fafafa;
-    text-rendering: optimizelegibility;
-    font-weight: 400;
-    line-height: 1;
-    display: inline-block;
-}
-.obb-bn {
-    color:#6B5D4D;
-    font-family: "old_standard_ttbold", Georgia, serif;
-    font-size: 1.2em;
-    background: #fff;
-    padding: 8px 5px 3px;
-    margin: 0 1px 1px 0;
-    text-shadow: 0 1px 0 #fafafa;
-    text-rendering: optimizelegibility;
-    font-weight: 400;
-    line-height: 1;
-    display: inline-block;
-}
-.obb-bib {
-    color:#B0A18F;
-    font-family: "old_standard_ttbold", Georgia, serif;
-    font-size: 1.2em;
-    background: #fff;
-    padding: 8px 5px 3px;
-    text-shadow: 0 1px 0 #fafafa;
-    text-rendering: optimizelegibility;
-    font-weight: 400;
-    line-height: 1;
-    display: inline-block;
-}
-.bg-open {
-    background-color: #429398;
-}
-
-ul.flat_description {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-}
-
-ul.flat_description li:before {
-    content: '\2714\0020';
-}
-.row {
-    padding-bottom: 15px;
-}
+//Custom CSS
+@import "custom";

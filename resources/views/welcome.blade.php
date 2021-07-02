@@ -1,50 +1,12 @@
-<style>
-    .obb-open {
-        color:#429398;
-        font-family: "old_standard_ttbold", Georgia, serif;
-        font-size: 1.2em;
-        background: #fff;
-        padding: 8px 5px 3px;
-        text-shadow: 0 1px 0 #fafafa;
-        text-rendering: optimizelegibility;
-        font-weight: 400;
-        line-height: 1;
-        display: inline-block;
-    }
-    .obb-bn {
-        color:#6B5D4D;
-        font-family: "old_standard_ttbold", Georgia, serif;
-        font-size: 1.2em;
-        background: #fff;
-        padding: 8px 5px 3px;
-        margin: 0 1px 1px 0;
-        text-shadow: 0 1px 0 #fafafa;
-        text-rendering: optimizelegibility;
-        font-weight: 400;
-        line-height: 1;
-        display: inline-block;
-    }
-    .obb-bib {
-        color:#B0A18F;
-        font-family: "old_standard_ttbold", Georgia, serif;
-        font-size: 1.2em;
-        background: #fff;
-        padding: 8px 5px 3px;
-        text-shadow: 0 1px 0 #fafafa;
-        text-rendering: optimizelegibility;
-        font-weight: 400;
-        line-height: 1;
-        display: inline-block;
-    }
-</style>
+
 @extends('layouts.app')
 
 @section('content')
     {{--    container-fluid align-content-center flex-wrap align-items-center --}}
-    <div class="d-flex align-items-center pt-5">
+{{--    <div class="d-flex align-items-center pt-5">--}}
         <div class="row">
-            <div class="col-md-4 offset-md-1">
-                <h1 class="text-right">
+            <div class="col-md-6">
+                <h1 class="text-left">
                     <span class="obb-open">Open</span>
                     <span class="obb-bn">B'n</span>
                     <span class="obb-bib">Bib</span>
@@ -53,13 +15,13 @@
                     der allgemeinnützigen und kostenlosen Gastgeberseite für Alle aus informations- und bibliotheksverwandten Berufen.
                     Du suchst eine Übernachtungsmöglichkeit in einer anderen Stadt, weil du dort
                 <ul>
-                    <li>                    eine Fortbildung
+                    <li>eine Fortbildung
                     </li>
-                    <li>                    eine Fachtagung
+                    <li>eine Fachtagung
                     </li>
-                    <li>                    eine Messe
+                    <li>eine Messe
                     </li>
-                    <li>                    den Bibliothekartag
+                    <li>den Bibliothekartag
                     </li>
                 </ul>
                 besuchst?<br/>
@@ -73,10 +35,10 @@
 
             </div>
 
-            <div class="col-md-4 offset-md-1 text-center">
+            <div class="col-md-6 text-center">
                 <div class="card-header" style="background-color: #429398">{{ __('Mitmachen') }}</div>
 
-                <div class="card-body bg-light">
+                <div class="card-body bg-white border-danger">
                     <form method="POST" action="{{ route('register') }}">
                         @csrf
 
@@ -171,8 +133,8 @@
                 </div>
             </div>
         </div>
-    </div>
-    </div>
+{{--    </div>--}}
+{{--    </div>--}}
 
 @endsection
 

@@ -1,25 +1,3 @@
-<!--<style>
-    ul.flat_description {
-        list-style: none;
-        margin: 0;
-        padding: 0;
-    }
-
-    ul.flat_description li:before {
-        content: '\2714\0020';
-    }
-    .row {
-        padding-bottom: 15px;
-    }
-    .image-cropper {
-        width: 220px;
-        height: 220px;
-        position: relative;
-        overflow: hidden;
-        border-radius: 50%;
-    }
-</style>-->
-
 @extends('layouts.app')
 
 @section('content')
@@ -36,13 +14,16 @@
                     <img src="{{$user->profile->profileImage()}}" class="image-cropper rounded-circle mw-100 float-left mb-sm-4 mr-sm-4" alt="Profilbild">
                     <h2>Das Profil von {{ __($user->firstname) }}</h2>
                     @can ('update', $user->profile)
-                        <p><a href="/profile/{{ $user->id }}/edit">{{ __('Mein Profil bearbeiten') }}</a></p>
+                        <p><a href="/profile/{{ $user->username }}/edit">{{ __('Mein Profil bearbeiten') }}</a></p>
+                    @else
+                        <a href="/messages/create/{{ $user->username }}" class="btn btn-outline-info" role="button" aria-pressed="true">Schreibe eine Nachricht</a>
+                        <button type="button" class="btn btn-outline-info" data-toggle="modal" data-target="#commentsModal">Ins Gästebuch schreiben </button>
                     @endcan
-                    <button type="button" class="btn btn-outline-info">Nachricht schreiben</button>
-                    <button type="button" class="btn btn-outline-info">ins Gästebuch schreiben </button>
+
+
             </div>
             <div class="col-sm-12">
-                <ul class="nav nav-tabs">
+                <ul class="nav nav-tabs mb-3">
                     <li class="nav-item">
                         <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Über mich</a>
                     </li>
@@ -59,32 +40,32 @@
                 <div class="tab-content">
                     <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
                         <div class="row">
-                            <div class="col-sm-3 font-weight-bold pr-5">Mein Profiltitel</div>
-                            <div class="col-sm-9">{{ $user->profile->profile_title ?? 'Schreibe hier eine kurzen Text!'}}</div>
+                            <div class="col-sm-3 font-weight-bold pr-5">Kurzbeschreibung</div>
+                            <div class="col-sm-9">{{ $user->profile->profile_title ?? 'Schreibe hier eine kurzen Text! Er wird in der Suche angezeigt.'}}</div>
                         </div>
                         <div class="row">
                             <div class="col-sm-3 font-weight-bold pr-5">Über mich</div>
                             <div class="col-sm-9">{{ optional($user->profile)->profile_description}}</div>
                         </div>
-                    </div>
-                    <div id="work" class="tab-pane fade">
                         <div class="row">
-                            <div class="col-sm-3 font-weight-bold pr-5">Was ich beruflich mache</div>
-                            <div class="col-sm-9">{{ optional($user->profile)->professional_description}}</div>
+                            <div class="col-sm-3 font-weight-bold pr-5">Wohnort</div>
+                            <div class="col-sm-9">{{ optional($user->profile)->plz}} {{ optional($user->profile)->location}}</div>
                         </div>
                         <div class="row">
-                            <div class="col-sm-3 font-weight-bold pr-5">Was ich anbieten kann</div>
-                            <div class="col-sm-9">{{ optional($user->profile)->professional_offer}}</div>
-                        </div>
-                    </div>
-
-                    <div id="couch" class="tab-pane fade">
-                        <div class="row">
-                            <div class="col-sm-3 font-weight-bold pr-5">Meine Wohnung</div>
+                            <div class="col-sm-3 font-weight-bold pr-5">Karte</div>
                             <div class="col-sm-9">
                                 <div class="card-body" id="mapid"></div>
                             </div>
                         </div>
+                    </div>
+
+                    <div id="couch" class="tab-pane fade">
+
+                        <div class="row">
+                            <div class="col-sm-3 font-weight-bold pr-5">Beschreibung der Übernachtung</div>
+                            <div class="col-sm-9">{{ optional($user->profile)->accommodation_description}}</div>
+                        </div>
+
                         <div class="row">
                             <div class="col-sm-3 font-weight-bold pr-5">Meine Übernachtungsmöglichkeit</div>
                             <div class="col-sm-9">{{ optional($user->profile)->accommodation_type}} </div>
@@ -120,48 +101,83 @@
                             <div class="col-sm-9">{{ optional($user->profile)->length_of_stay}} Tag(e) </div>
                         </div>
 
-                        <div class="row">
+                        @if (count((array) $user->profile->offer_as_host)>0)
+                        <div class="row mt-lg-3">
                             <div class="col-sm-3 font-weight-bold pr-5">Als Gastgeber stelle ich Folgendes</div>
                             <div class="col-sm-9">
                                 <ul class="flat_description">
-                                    <li>WLAN</li>
-                                    <li>Eigenes Zimmer</li>
+                                    @foreach((array) $user->profile->offer_as_host as $offer)
+                                        <li>{{ $offer }}</li>
+                                    @endforeach
                                 </ul>
-                                {{ optional($user->profile)->offer_as_host}}
+                            </div>
+                        </div>
+                        @endif
+
+                    </div>
+
+                    <div id="work" class="tab-pane fade">
+                        <div class="row">
+                            <div class="col-sm-3 font-weight-bold pr-5">Was ich beruflich mache</div>
+                            <div class="col-sm-9">{{ optional($user->profile)->professional_description}}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-3 font-weight-bold pr-5">Was ich anbieten kann</div>
+                            <div class="col-sm-9">{{ optional($user->profile)->professional_offer}}</div>
+                        </div>
+                    </div>
+{{--                    @if( Session::has( 'success' ))--}}
+{{--                        <p class="alert alert-info">{{ Session::get('success') }}</p>--}}
+{{--                    @endif--}}
+                    <div id="comments" class="tab-pane fade">
+                        @foreach($user->profile->comments as $comment)
+                            <div class="media border p-3">
+                                <img src="{{$comment->user->profile->profileImage()}}" class="mr-3 image-cropper rounded-circle " style="max-height: 50px; max-width:50px;" alt="Profilbild">
+                                <div class="media-body">
+                                    <h4><a href="/profile/{{$comment->user->username}}">{{$comment->user->firstname ?? 'Kein Name'}}</a> <small><i> Geschrieben am {{$comment->created_at->format('d.m.Y')}}</i></small></h4>
+                                    <p> {{ $comment->message }} </p>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+            </div>
+            <!-- The Modal -->
+            <form action {{'CommentsController@store'}} method="POST">
+{{--            <form>--}}
+                @csrf
+                <div class="modal" id="commentsModal">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+
+                        <!-- Modal Header -->
+                        <div class="modal-header">
+                            <h4 class="modal-title">Schreibe ins Gästebuch von {{  __($user->firstname) }}</h4>
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        </div>
+
+                        <!-- Modal body -->
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <textarea class="form-control" rows="7" name="message" id="message">Deine Nachricht</textarea>
+                            </div>
+                            <div class="form-group">
+                                <textarea class="form-control" rows="0" name="profile_id" id="profile_id" hidden>{{ __($user->profile->id) }}</textarea>
                             </div>
                         </div>
 
-                        <div class="row">
-                            <div class="col-sm-3 font-weight-bold pr-5">Beschreibung der Übernachtung</div>
-                            <div class="col-sm-9">{{ optional($user->profile)->accommodation_other ?? '-'}}</div>
-                        </div>
-                    </div>
-                    <div id="comments" class="tab-pane fade">
-                        <div class="media border p-3">
-                            <img src="https://www.w3schools.com/bootstrap4/img_avatar3.png" alt="John Doe" class="mr-3 mt-3 rounded-circle" style="width:60px;">
-                            <div class="media-body">
-                                <h4>Katharina <small><i>Geschriebem am February 19, 2016</i></small></h4>
-                                <p>Die Übernachtungs bei dir war toll! Vielen Dank!</p>
-                            </div>
-                        </div>
-                        <div class="media border p-3">
-                            <img src="https://www.w3schools.com/bootstrap4/img_avatar3.png" alt="John Doe" class="mr-3 mt-3 rounded-circle" style="width:60px;">
-                            <div class="media-body">
-                                <h4>Markus <small><i>Geschriebem am February 19, 2016</i></small></h4>
-                                <p>Die Übernachtungs bei dir war toll! Vielen Dank!</p>
-                            </div>
+                        <!-- Modal footer -->
+                        <div class="modal-footer">
+                            Möchtest Du die Nachricht so senden? Achtung: Änderungen sind nicht möglich!
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">Abbrechen</button>
+                            <button type="submit" class="btn btn-success">Senden</button>
                         </div>
 
                     </div>
                 </div>
-
-
-
-
-
             </div>
-    </div>
-
+            </form>
+        </div>
     </div>
 @endsection
 @section('styles')
@@ -170,7 +186,11 @@
           crossorigin=""/>
 
     <style>
-        #mapid { min-height: 300px; }
+        #mapid {
+            min-height: 300px;
+            width:100%;
+            flex-grow: 1;
+        }
     </style>
 @endsection
 
@@ -179,65 +199,16 @@
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
             integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
             crossorigin=""></script>
-
     <script>
-        var mymap = L.map('mapid').setView([52.52, 13.45], 15);
-        //var marker = L.marker([52.52, 13.45]).addTo(mymap);
-
-        /*        var popup = L.popup();
-                function onMapClick(e) {
-                    popup
-                        .setLatLng(e.latlng)
-                        .setContent("You clicked the map at " + e.latlng.toString())
-                        .openOn(mymap);
-                }
-                mymap.on('click', onMapClick);*/
-
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        }).addTo(mymap);
-        {{--
-        var map = L.map('mapid').setView([{{ config('leaflet.map_center_latitude') }}, {{ config('leaflet.map_center_longitude') }}], {{ config('leaflet.zoom_level') }});
-        var baseUrl = "{{ url('/') }}";
+        var mapCenter = [{{ request('latitude', config('leaflet.map_center_latitude')) }}, {{ request('longitude', config('leaflet.map_center_longitude')) }}];
+        {{--var map = L.map('mapid').setView(mapCenter, {{ config('leaflet.zoom_level') }});--}}
+        var map = L.map('mapid').setView([{{$user->profile->latitude}}, {{$user->profile->longitude}}], 7);
+        map.invalidateSize();
 
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         }).addTo(map);
+        L.marker([{{$user->profile->latitude}}, {{$user->profile->longitude}}]).addTo(map);
 
-        axios.get('{{ route('api.outlets.index') }}')
-            .then(function (response) {
-                console.log(response.data);
-                L.geoJSON(response.data, {
-                    pointToLayer: function(geoJsonPoint, latlng) {
-                        return L.marker(latlng);
-                    }
-                })
-                    .bindPopup(function (layer) {
-                        return layer.feature.properties.map_popup_content;
-                    }).addTo(map);
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
-
-        @can('create', new App\Outlet)
-        var theMarker;
-
-        map.on('click', function(e) {
-            let latitude = e.latlng.lat.toString().substring(0, 15);
-            let longitude = e.latlng.lng.toString().substring(0, 15);
-
-            if (theMarker != undefined) {
-                map.removeLayer(theMarker);
-            };
-
-            var popupContent = "Your location : " + latitude + ", " + longitude + ".";
-            popupContent += '<br><a href="{{ route('outlets.create') }}?latitude=' + latitude + '&longitude=' + longitude + '">Add new outlet here</a>';
-
-            theMarker = L.marker([latitude, longitude]).addTo(map);
-            theMarker.bindPopup(popupContent)
-                .openPopup();
-        });
-        @endcan--}}
     </script>
 @endpush

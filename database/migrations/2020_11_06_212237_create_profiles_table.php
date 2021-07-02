@@ -18,10 +18,14 @@ class CreateProfilesTable extends Migration
             //Referenz zum User -> Fremdschlüssel
             $table->unsignedBigInteger('user_id');
             $table->string('profile_title')->nullable();
+            $table->string('plz', 5)->nullable();
+            $table->string('location')->nullable();
             $table->text('profile_description')->nullable();
+            $table->string('latitude', 15)->nullable();
+            $table->string('longitude', 15)->nullable();
             $table->boolean('is_host')->default(0);
             $table->integer('length_of_stay')->nullable();
-            $table->string('offer_as_host')->nullable();
+            $table->json('offer_as_host')->nullable();
             $table->text('accommodation_description')->nullable();
             $table->string('image')->nullable();
             $table->string('accommodation_type')->nullable();

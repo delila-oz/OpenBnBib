@@ -9,7 +9,7 @@ RUN apt-get update -yqq && \
     docker-php-ext-install pdo_pgsql && \
     docker-php-ext-install pgsql && \
     docker-php-ext-configure zip --with-libzip && \
-    docker-php-ext-configure gd --with-freetype --with-jpeg  &&\
+    docker-php-ext-configure gd --with-freetype-dir=/usr --with-jpeg-dir=/usr --with-png-dir=/usr &&\
     docker-php-ext-install zip && \
     docker-php-ext-install gd && \
     rm -rf /var/lib/apt/lists/*
