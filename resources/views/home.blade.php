@@ -18,11 +18,13 @@
                     Herzlich Willkommen, <a href="/profile/{{ $user->username }}">{{ __($user->firstname) }}</a>
                 </h2>
                 <p>
+                    @isset($user->profile->is_host)
                     @if($user->profile->is_host===true)
                         Du bist Gastgeber:in!
                     @else
                         Du bist im Moment nicht Gastgeber:in!
                     @endif
+                    @endisset
                 </p>
                 <b>Deine Kurzbeschreibung</b> <br>
                 {{ $user->profile->profile_title ?? 'Kein Text'}} <br>

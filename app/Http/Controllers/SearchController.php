@@ -9,42 +9,28 @@ use App\Http\Requests;
 
 class SearchController extends Controller
 {
-    public function showAll(Request $request)
+    public function search(Request $request)
     {
-        $users = Profile::with('user')->paginate(5);
+//      https://m.dotdev.co/writing-advanced-eloquent-search-query-filters-de8b6c2598db
+        $user = Profile::with('user');
+        $query = $user->newQuery();
         $search = "Zeige alle Profile";
+
+        if ($request->has('plz')) {
+            $search = 'PLZ: '.$request->get('plz');
+            $query->where('plz', 'like', $request->input('plz').'%');
+        }
+
+        if ($request->has('profile_description')) {
+            $search = $search . ', Profilbeschreibung: '.$request->get('profile_description');
+            $query->where('profile_description', 'ilike', '%'.$request->input('profile_description').'%');
+        }
+
+        $users = $query->orderBy('plz')->paginate(5);
+
         $totalResults = User::count();
         return view('search', [
-            'users'=>$users,
-            'search'=>$search,
-            'totalResults'=>$totalResults
-        ]);
-    }
-
-    public function search(Request $request) {
-        // Eloquent -->This will ensure that the items returned in the paginator are instances of your Product Eloquent model, with the category
-        // relationship eager loaded (I.e. it will load the category relationship for each Product returned using one query, rather than 5 queries,
-        // one for every Product).
-        if( $request->plz){
-            $search = $request->get('plz');
-            $users = Profile::with('user')
-                ->where('plz', 'like', $search.'%');
-        }
-        elseif( $request->profile_description){
-            $search = $request->get('profile_description');
-            $users = Profile::with('user')
-                ->where('profile_description', 'ilike', '%'.$search.'%');
-        }
-        $request->validate([
-            'query'=>'required|min:2'
-        ]);
-        $search = $request->input('query');
-        $users = Profile::with('user')
-            ->where('profile_description', 'ilike', '%'.$search.'%')
-            ->paginate(5);
-        $totalResults = User::count();
-        return view('search',[
-            'users'=>$users,
+            'user'=>$users,
             'search'=>$search,
             'totalResults'=>$totalResults
         ]);

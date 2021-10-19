@@ -21,8 +21,8 @@ class CreateProfilesTable extends Migration
             $table->string('plz', 5)->nullable();
             $table->string('location')->nullable();
             $table->text('profile_description')->nullable();
-            $table->string('latitude', 15)->nullable();
-            $table->string('longitude', 15)->nullable();
+            $table->decimal('latitude', 10,7)->nullable();
+            $table->decimal('longitude', 10, 7)->nullable();
             $table->boolean('is_host')->default(0);
             $table->integer('length_of_stay')->nullable();
             $table->json('offer_as_host')->nullable();
@@ -38,6 +38,8 @@ class CreateProfilesTable extends Migration
             $table->text('professional_description')->nullable();
             $table->timestamps();
             $table->index('user_id');
+            //onDelete: wenn User gelöscht wird, wird auch Profile gelöscht
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 

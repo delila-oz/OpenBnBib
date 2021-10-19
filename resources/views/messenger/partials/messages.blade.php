@@ -4,7 +4,12 @@
 
     </a>
     <div class="media-body">
-        <h5 class="media-heading"><a href="/profile/{{ $message->user->username }}">{{ $message->user->firstname }}</a></h5>
+
+        @can ('update', $message->user->profile)
+            <h5 class="media-heading">Ich</h5>
+        @else
+            <h5 class="media-heading"><a href="/profile/{{ $message->user->username }}">{{ $message->user->firstname }}</a></h5>
+        @endcan
         <p>{{ $message->body }}</p>
         <div class="text-muted">
 {{--            war: $message->created_at->diffForHumans()--}}

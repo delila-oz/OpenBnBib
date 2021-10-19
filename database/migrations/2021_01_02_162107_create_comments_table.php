@@ -22,8 +22,8 @@ class CreateCommentsTable extends Migration
             $table->text('message');
             $table->timestamps();
             $table->index('user_id');
-            //onDelete: wenn Nutzer gelöscht wird, wird auch commentar gelöscht
-            $table->foreign('profile_id')->references('id')->on('profiles')->onDelete('cascade');
+            //onDelete: wenn Nutzer gelöscht wird, wird auch Kommentar für ihn gelöscht
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 

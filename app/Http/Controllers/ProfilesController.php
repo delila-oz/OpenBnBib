@@ -16,26 +16,29 @@ class ProfilesController extends Controller
         $this->middleware('auth');
     }
 
-    public function index($query)
+    public function index($user)
     {
         //$query = User::findOrFail($query);  //das gleiche macht der Parameter in der edit Funktion
         //username statt ID nutzen
-        $query = User::whereUsername($query)->firstOrFail();
-        return view('profiles.index', [
-            'user' => $query,
-        ]);
-        //knapper: return view('profiles.index', compact('user'));
+        $user = User::whereUsername($user)->firstOrFail();
+//        return view('profiles.index', [
+//            'user' => $user,
+//        ]);
+        //dd($user);
+        return view('profiles.index', compact('user'));
     }
 
-    public function edit(User $query)
+    public function edit($user)
     {
-        $this->authorize('update', $query->profile);
+        $user = User::whereUsername($user)->firstOrFail();
+        $this->authorize('update', $user->profile);
         return view('profiles.edit', compact('user'));
     }
 
-    public function update(User $query)
+    public function update($user)
     {
-        $this->authorize('update', $query->profile);
+        $user = User::whereUsername($user)->firstOrFail();
+        $this->authorize('update', $user->profile);
         $data = request()->validate([
             'profile_title' => '',
             'profile_description' => '',
@@ -81,12 +84,12 @@ class ProfilesController extends Controller
         ));
 
         //return redirect()->route('profile.show');
-        return redirect("/profile/{$query->username}");
+        return redirect("/profile/{$user->username}");
     }
 
-    public function search(Request $request, User $user)
+    public function search(Request $request)
     {
-//        https://m.dotdev.co/writing-advanced-eloquent-search-query-filters-de8b6c2598db
+//      https://m.dotdev.co/writing-advanced-eloquent-search-query-filters-de8b6c2598db
         $user = Profile::with('user');
         $query = $user->newQuery();
         $search = "Zeige alle Profile";

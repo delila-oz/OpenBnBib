@@ -132,10 +132,19 @@
                     <div id="comments" class="tab-pane fade">
                         @foreach($user->profile->comments as $comment)
                             <div class="media border p-3">
-                                <img src="{{$comment->user->profile->profileImage()}}" class="mr-3 image-cropper rounded-circle " style="max-height: 50px; max-width:50px;" alt="Profilbild">
+                                @if(!empty($comment->user))
+                                    <img src="{{$comment->user->profile->profileImage() }}" class="mr-3 image-cropper rounded-circle " style="max-height: 50px; max-width:50px;" alt="Profilbild">
+                                @else
+{{--                                    Standardbild, falls der User schon gelöscht ist--}}
+                                    <img src="https://upload.wikimedia.org/wikipedia/commons/1/12/User_icon_2.svg">
+                                @endif
                                 <div class="media-body">
-                                    <h4><a href="/profile/{{$comment->user->username}}">{{$comment->user->firstname ?? 'Kein Name'}}</a> <small><i> Geschrieben am {{$comment->created_at->format('d.m.Y')}}</i></small></h4>
-                                    <p> {{ $comment->message }} </p>
+                                @if(!empty($comment->user))
+                                    <h4><a href="/profile/{{$comment->user->username ?? ''}} ">{{$comment->user->firstname }}</a> <small><i> Geschrieben am {{$comment->created_at->format('d.m.Y')}}</i></small></h4>
+                                @else
+                                    <h4> Gelöschter Nutzer <small><i> Geschrieben am {{$comment->created_at->format('d.m.Y')}}</i></small></h4>
+                                @endif
+                                <p> {{ $comment->message }} </p>
                                 </div>
                             </div>
                         @endforeach

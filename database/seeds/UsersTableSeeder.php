@@ -1,4 +1,5 @@
 <?php
+namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
@@ -12,9 +13,9 @@ class UsersTableSeeder extends Seeder
      */
     public function run()
     {
-/*        DB::table('users')->insert([
+        DB::table('users')->insert([
 
-        ]);*/
+        ]);
         factory(App\User::class, 10)->create()->each(function ($user) {
             $user->profile()->save(factory(App\Profile::class)->make());
         });

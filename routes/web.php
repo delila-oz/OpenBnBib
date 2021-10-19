@@ -22,26 +22,29 @@ Route::get('/phpinfo', function () {
 Route::get('/', function () {
     return view('welcome');
 });
-Auth::routes(['verify' => true]);
+Auth::routes(['verify' => true]); //E-Mail-Verifizierung für Test ausgesetzt
 Auth::routes();
 Route::get('/home', 'HomeController@index');
 //PROFIL
-    Route::get('/profile/{user:username}', 'ProfilesController@index')->name('profile.show');
+    //Route::get('/profile/{user:username}', 'ProfilesController@index')->name('profile.show');
+    Route::get('/profile/{username}', 'ProfilesController@index')->name('profile.show');
     //Zeigt das Formular an
-    Route::get('/profile/{user:username}/edit', 'ProfilesController@edit')->name('profile.edit');
+    Route::get('/profile/{username}/edit', 'ProfilesController@edit')->name('profile.edit');
     //Kümmert sich ums Updaten
-    Route::patch('/profile/{user:username}', 'ProfilesController@update')->name('profile.update');
+    Route::patch('/profile/{username}', 'ProfilesController@update')->name('profile.update');
 //Gästebucheintrag
-    Route::post('/profile/{user:username}', 'CommentsController@store')->name('comments.store');
+    Route::post('/profile/{username}', 'CommentsController@store')->name('comments.store');
 //SUCHE
-//    Route::post('/search', 'SearchController@filter');
+    Route::get('/search', 'SearchController@search')->name('search');
 //    Route::get('/search', function () {     return view('search'); });
-    Route::get('/search', 'ProfilesController@search')->name('search');
-    Route::get('/find','ProfilesController@find')->name('web.find');
+//    Route::get('/search', 'ProfilesController@search')->name('search');
 //Hilfeseiten
     Route::get('/about', function () { return view('about'); });
     Route::get('/faq', function () { return view('faq'); });
     Route::get('/nettiquette', function () { return view('nettiquette'); });
+//USER Einstellungen
+    Route::get('/user/{username}/edit', 'UsersController@edit')->name('user.edit');
+    Route::patch('/user/{username}', 'UsersController@destroy')->name('user.destroy');
 //MESSENGER
 Route::group(['prefix' => 'messages'], function () {
     Route::get('/', ['as' => 'messages', 'uses' => 'MessagesController@index']);

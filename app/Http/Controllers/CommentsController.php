@@ -38,7 +38,7 @@ class CommentsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Http\Response|\Illuminate\Routing\Redirector
      */
-    public function store(Request $request, User $user)
+    public function store(Request $request)
     {
         $this->validate($request, [
             'message' => 'required|min:5|max:2000',
@@ -55,7 +55,7 @@ class CommentsController extends Controller
         $comment->profile_id = $request->input('profile_id');;
         $comment->save();
         //dd($comment);
-        return redirect("/profile/{$user->username}");
+        return redirect("/profile/{$comment->profile->user->username}");
     }
 
       /**

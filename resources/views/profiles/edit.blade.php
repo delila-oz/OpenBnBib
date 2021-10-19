@@ -63,8 +63,8 @@
                                     </div>
 
                                     <div class="form-group row">
-                                        <label for="birthday" class="col-md-4 col-form-label">Karte (Bitte klicke in die Karte um den
-                                            ungefaehren Standort deiner Übernachtungsmöglichkeit anzugeben)</label>
+                                        <label for="birthday" class="col-md-4 col-form-label">Karte (Bitte bewege den Marker um den
+                                            ungefähren Standort deiner Übernachtungsmöglichkeit anzugeben)</label>
                                         <div id="mapid"></div>
                                     </div>
 
@@ -372,7 +372,9 @@
                                         @endif-->
                                     </div>
                                 </div>
+
                             </div>
+
                             <div class="row pt-4">
                                 <button class="btn btn-primary">Profil ändern</button>
                             </div>
@@ -412,25 +414,14 @@
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         }).addTo(map);
-        //alter Marker
-        let oldMarker = L.marker([{{$user->profile->latitude}}, {{$user->profile->longitude}}]).addTo(map);
 
-        function onMapClick(e) {
-            // Place marker
-            var marker;
-            let latitude = e.latlng.lat.toString().substring(0, 15);
-            let longitude = e.latlng.lng.toString().substring(0, 15);
+        var marker = L.marker([{{$user->profile->latitude ?? 50.9446596}}, {{$user->profile->longitude ?? 10.3226091}}],{
+                        draggable: true
+        }).addTo(map);
 
-            map.on('click', function (e) {
-                if (marker) {
-                    map.removeLayer(marker);
-                }
-                marker = new L.Marker([latitude, longitude], {title: "Host", alt: "Host", draggable: true}).addTo(map);
-                marker.bindPopup("Neuer Standort: " + marker.getLatLng().toString());
-                document.getElementById('latitude').value = latitude;
-                document.getElementById('longitude').value = longitude;
-            });
-        }
-        map.on('click', onMapClick);
-    </script>
+        marker.on('dragend', function (e) {
+        document.getElementById('latitude').value = marker.getLatLng().lat;
+        document.getElementById('longitude').value = marker.getLatLng().lng;
+    });
+</script>
 @endpush

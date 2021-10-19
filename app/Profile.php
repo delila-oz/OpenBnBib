@@ -13,11 +13,6 @@ class Profile extends Model
      */
     protected $guarded = [];
 
-    //TODO $fillable
-//    protected $fillable = [
-//        'latitude', 'longitude',
-//    ];
-
     //TODO macht, dass jeder Array Eintrag einzeln statt [a, b, c] angezeigt wird; castet das Array in JSON wie im Model beschrieben
     protected $casts = [
       'offer_as_host' => 'array'
@@ -40,6 +35,11 @@ class Profile extends Model
         return $this->hasMany(Comment::class)->orderBy('created_at', 'desc');
     }
 
+    /**
+     * Get the route key for the model.
+     *
+     * @return string
+     */
     public function getRouteKeyName()
     {
         return 'username';
