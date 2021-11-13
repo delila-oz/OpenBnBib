@@ -1,13 +1,11 @@
 <?php
-namespace Database\Seeders;
 
-use App\Comment;
-use Carbon\Carbon;
 use Illuminate\Database\Seeder;
-use Faker\Generator as Faker;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
-class CommentsTableSeeder extends Seeder
+class CommentSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -16,20 +14,12 @@ class CommentsTableSeeder extends Seeder
      */
     public function run()
     {
-
         DB::table('comments')->insert([
-            'user_id' => 1,
-            'profile_id' => 3,
+            'user_id' => 2,
+            'profile_id' => 1,
             'message' => Str::random(100),
             'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
             'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
         ]);
-        /*
-        DB::table('comments')->insert([
-
-        ]);
-        factory(Comment::class, 10)->create();
-            Comment::factory()
-            ->count(15);*/
     }
 }
