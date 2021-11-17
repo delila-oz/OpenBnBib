@@ -1,26 +1,34 @@
 # Thesis
 Von mir bearbeitete befinden sich in auf der Hauptebene und folgenden Unterordnern:
--app
--database
--docker
--resources
--routes
+- app
+- database
+- docker
+- resources
+- routes
 
 ## OpenBnBib Projekt starten
-Das Programm Docker muss installiert sein. (Download unter https://www.docker.com/)
-Auf der Kommandozeile müssen folgende Befehle ausgeführt werden:
-docker-compose build ...
+Das Programm Docker muss installiert sein. (Download für Windows, Mac oder Linux unter https://www.docker.com/). 
 
+Anschließend in das Stammverzeichnis des Projekts (OpenBnBib) wechseln.
+Auf der Kommandozeile müssen dann folgende Befehle ausgeführt werden:
+```
+docker-compose -f docker-compose.yml up -d
+```
 
 ## Testdaten
 Testdaten wurden mit folgendem Befehl exportiert:
-docker exec openbnbib_db pg_dump -U openbnbib homestead --no-owner | gzip -9  > db-backup-$(date +%d-%m-%y).sql.gz
+```
+docker exec openbnbib_db pg_dump -U openbnbib homestead --no-owner | > db-backup-20211113db.sql
+```
 (siehe https://diegoquintanav.github.io/dumping-postgres-db-with-docker.html)
 
-Zum Importieren bitte folgenden Befehl eingeben:
-docker exec openbnbib_db psql dbname < db-backup-20211113.sql
+Zum **Importieren der Daten** bitte folgenden Befehl eingeben:
+```
+docker exec -i openbnbib_db psql -U openbnbib homestead < db-backup-20211113db.sql
+```
+## Berechtigung
+Sollte es zu Fehlermeldungen wegen Dateiberechtigungen kommen, ist es nötig, dem Webserver die nötige Berechtigung zu geben:
 
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
-
+sudo chown -R www-data:www-data OpenBnBib-main
+## Hinweis
+Der Abspeichern von Bildern (bei Änderung des Nutzerprofils) ist nicht möglich.
