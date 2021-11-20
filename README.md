@@ -26,9 +26,15 @@ Zum **Importieren der Daten** bitte folgenden Befehl eingeben:
 ```
 docker exec -i openbnbib_db psql -U openbnbib homestead < db-backup-20211113db.sql
 ```
+
+Es sind bereits einige Nutzer, Kommentare und Nachrichten angelegt. Als Test-Daten für den Login kann man folgende nutzen: 
+
+`E-Mail: metzger.barbel@example.net`
+`Passwort: password`
+
 ## Berechtigung
 Sollte es zu Fehlermeldungen wegen Dateiberechtigungen kommen, ist es nötig, dem Webserver die nötige Berechtigung zu geben:
 
-sudo chown -R www-data:www-data OpenBnBib-main
+sudo chown -R www-data:www-data <Ordnername>
 ## Hinweis
 Der Abspeichern von Bildern (bei Änderung des Nutzerprofils) ist nicht möglich.
