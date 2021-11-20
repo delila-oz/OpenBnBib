@@ -35,6 +35,6 @@ Es sind bereits einige Nutzer, Kommentare und Nachrichten angelegt. Als Test-Dat
 ## Berechtigung
 Sollte es zu Fehlermeldungen wegen Dateiberechtigungen kommen, ist es nötig, dem Webserver die nötige Berechtigung zu geben:
 
-sudo chown -R www-data:www-data <Ordnername>
+sudo chown -R www-data:www-data OpenBnBib
 ## Hinweis
 Der Abspeichern von Bildern (bei Änderung des Nutzerprofils) ist nicht möglich.
