@@ -88,10 +88,18 @@
 @endsection
 @push('scripts')
     <!-- Make sure you put this AFTER Leaflet's CSS -->
+
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
             integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
             crossorigin=""></script>
     <script>
+        var myIcon = L.icon({
+            iconUrl: '../storage/marker.svg',
+            iconSize: [38, 95],
+            iconAnchor: [22, 94],
+            popupAnchor: [-3, -76],
+        });
+
         var map = L.map('mapid').setView([51.4567, 10.5033], 5);
         map.invalidateSize();
 
@@ -100,7 +108,7 @@
         }).addTo(map);
 
         @foreach($user as $profile)
-            marker = new L.marker([{{$profile->latitude}}, {{$profile->longitude}}]).addTo(map);
+            marker = new L.marker([{{$profile->latitude}}, {{$profile->longitude}}], {icon: myIcon}).addTo(map);
             marker.bindPopup('<a href="/profile/{{$profile->user->username}}">{{$profile->user->firstname}}</a>').addTo(map);
         @endforeach
 

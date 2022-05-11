@@ -9,7 +9,7 @@
             <!-- Subject Form Input -->
             <div class="form-group">
                 <label class="control-label">Titel</label>
-                <input type="text" class="form-control" name="subject" placeholder="Subject"
+                <input type="text" class="form-control" name="subject" placeholder="Titel"
                        value="{{ old('subject') }}">
             </div>
 

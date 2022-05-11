@@ -10900,7 +10900,7 @@ a.text-dark:focus {
 }
 
 a {
-  color: #429398 !important;
+  color: #429398;
   text-decoration: none;
   background-color: transparent;
 }
@@ -10982,6 +10982,10 @@ ul.flat_description {
 .btn-primary:hover {
   background-color: #429398;
   border-color: #429398;
+}
+
+.btn-primary a {
+  color: white;
 }
 
 .row {

@@ -16,8 +16,10 @@
                     @can ('update', $user->profile)
                         <p><a href="/profile/{{ $user->username }}/edit">{{ __('Mein Profil bearbeiten') }}</a></p>
                     @else
-                        <a href="/messages/create/{{ $user->username }}" class="btn btn-outline-info" role="button" aria-pressed="true">Schreibe eine Nachricht</a>
-                        <button type="button" class="btn btn-outline-info" data-toggle="modal" data-target="#commentsModal">Ins Gästebuch schreiben </button>
+                        <button type="button" class="btn btn-primary">
+                        <a href="/messages/create/{{ $user->username }}" aria-pressed="true">Schreibe eine Nachricht</a>
+                        </button>
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#commentsModal">Ins Gästebuch schreiben </button>
                     @endcan
 
 
@@ -68,22 +70,32 @@
 
                         <div class="row">
                             <div class="col-sm-3 font-weight-bold pr-5">Meine Übernachtungsmöglichkeit</div>
-                            <div class="col-sm-9">{{ optional($user->profile)->accommodation_type}} </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-sm-3 font-weight-bold pr-5">Eigenes Zimmer</div>
-                            <div class="col-sm-9">{{ optional($user->profile)->own_room}} </div>
+                            <div class="col-sm-9">
+                                <ul class="accommodation_type">
+                                    @foreach((array) $user->profile->accommodation_type as $accommodation_type)
+                                        <li>{{ $accommodation_type }}</li>
+                                    @endforeach
+                                </ul></div>
                         </div>
 
                         <div class="row">
                             <div class="col-sm-3 font-weight-bold pr-5">Haustiere</div>
-                            <div class="col-sm-9">{{ optional($user->profile)->pets}} </div>
+                            <div class="col-sm-9">
+                                <ul class="pets">
+                                    @foreach((array) $user->profile->pets as $pets)
+                                        <li>{{ $pets }}</li>
+                                    @endforeach
+                                </ul></div>
                         </div>
 
                         <div class="row">
                             <div class="col-sm-3 font-weight-bold pr-5">Barrierefreiheit</div>
-                            <div class="col-sm-9">{{ optional($user->profile)->accessibility}} </div>
+                            <div class="col-sm-9">
+                                <ul class="accessibility">
+                                    @foreach((array) $user->profile->accessibility as $accessibility)
+                                        <li>{{ $accessibility }}</li>
+                                    @endforeach
+                                </ul></div>
                         </div>
 
                         <div class="row">
@@ -92,7 +104,7 @@
                         </div>
 
                         <div class="row">
-                            <div class="col-sm-3 font-weight-bold pr-5">Rauchen</div>
+                            <div class="col-sm-3 font-weight-bold pr-5">Darf hier geraucht werden</div>
                             <div class="col-sm-9">{{ optional($user->profile)->accepts_smoker}} </div>
                         </div>
 
@@ -120,10 +132,15 @@
                         <div class="row">
                             <div class="col-sm-3 font-weight-bold pr-5">Was ich beruflich mache</div>
                             <div class="col-sm-9">{{ optional($user->profile)->professional_description}}</div>
+
                         </div>
                         <div class="row">
                             <div class="col-sm-3 font-weight-bold pr-5">Was ich anbieten kann</div>
-                            <div class="col-sm-9">{{ optional($user->profile)->professional_offer}}</div>
+                            <div class="col-sm-9">                            <ul class="professional_offer">
+                                    @foreach((array) $user->profile->professional_offer as $offer)
+                                        <li>{{ $offer }}</li>
+                                    @endforeach
+                                </ul></div>
                         </div>
                     </div>
 {{--                    @if( Session::has( 'success' ))--}}
@@ -209,6 +226,13 @@
             integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
             crossorigin=""></script>
     <script>
+        var myIcon = L.icon({
+            iconUrl: '../storage/marker.svg',
+            iconSize: [38, 95],
+            iconAnchor: [22, 94],
+            popupAnchor: [-3, -76],
+        });
+
         var mapCenter = [{{ request('latitude', config('leaflet.map_center_latitude')) }}, {{ request('longitude', config('leaflet.map_center_longitude')) }}];
         {{--var map = L.map('mapid').setView(mapCenter, {{ config('leaflet.zoom_level') }});--}}
         var map = L.map('mapid').setView([{{$user->profile->latitude}}, {{$user->profile->longitude}}], 7);
@@ -217,7 +241,7 @@
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         }).addTo(map);
-        L.marker([{{$user->profile->latitude}}, {{$user->profile->longitude}}]).addTo(map);
+        L.marker([{{$user->profile->latitude}}, {{$user->profile->longitude}}], {icon: myIcon} ).addTo(map);
 
     </script>
 @endpush

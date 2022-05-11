@@ -26,7 +26,7 @@ class SearchController extends Controller
             $query->where('profile_description', 'ilike', '%'.$request->input('profile_description').'%');
         }
 
-        $users = $query->orderBy('plz')->paginate(5);
+        $users = $query->orderBy('created_at','desc')->paginate(10);
 
         $totalResults = User::count();
         return view('search', [

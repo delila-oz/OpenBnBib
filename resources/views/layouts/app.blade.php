@@ -11,7 +11,7 @@
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
+{{--    <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">--}}
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
@@ -19,7 +19,6 @@
     @yield('styles')
 </head>
 <body>
-<div id="app">
     <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
         <div class="container">
             @guest
@@ -39,8 +38,11 @@
                             @else
                             <!-- Left Side Of Navbar -->
                             <ul class="navbar-nav mr-auto align-content-center">
-                                <li><span class="m-5"> <i class="fas fa-search-location"></i><a href="/search"> Suche</a></span></li>
+                                <li><span class="m-5"><i class="fas fa-search-location"></i><a href="/search"> Suche</a></span></li>
                                 <li><i class="far fa-envelope"></i><a href="/messages"> Nachrichten</a></li>
+                                @if (auth()->user()->is_admin)
+                                <li><span class="m-5"><i class="far fa-lock"></i><a href="{{ route('admin.pages.index') }}"> Administration</a></span></li>
+                                @endif
                             </ul>
                             @endguest
                             <!-- Right Side Of Navbar -->

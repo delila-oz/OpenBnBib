@@ -46,6 +46,7 @@ class MessagesController extends Controller
      */
     public function show($id)
     {
+
         try {
             $thread = Thread::findOrFail($id);
         } catch (ModelNotFoundException $e) {
@@ -61,9 +62,17 @@ class MessagesController extends Controller
         $userId = Auth::id();
         $users = User::whereNotIn('id', $thread->participantsUserIds($userId))->get();
 
+
         $thread->markAsRead($userId);
 
-        return view('messenger.show', compact('thread', 'users'));
+        //NEW: don't show threads a user is not participating in
+        $participants = $thread->participantsUserIds();
+        if(in_array($userId, $participants)) {
+            return view('messenger.show', compact('thread', 'users'));
+        } else {
+            Session::flash('error_message', 'Diese Nachricht kannst du nicht lesen');
+            return redirect(route('messages'));
+        }
     }
 
     /**
@@ -156,4 +165,5 @@ class MessagesController extends Controller
 
         return redirect()->route('messages.show', $id);
     }
+
 }

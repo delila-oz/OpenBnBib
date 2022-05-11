@@ -35,7 +35,7 @@ $factory->define(Profile::class, function (Faker $faker) {
         'accessibility' => '',
         'number_of_persons' => $faker->randomDigitNotNull(),
         'professional_offer' => '',
-//        'is_smoker'  => $faker->boolean(),
+        'accepts_smoker'  => $faker->boolean(),
         'professional_description' => $faker->realText(180),
     ];
 });

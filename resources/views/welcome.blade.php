@@ -15,14 +15,11 @@
                     der allgemeinnützigen und kostenlosen Gastgeberseite für Alle aus informations- und bibliotheksverwandten Berufen.
                     Du suchst eine Übernachtungsmöglichkeit in einer anderen Stadt, weil du dort
                 <ul>
-                    <li>eine Fortbildung
-                    </li>
-                    <li>eine Fachtagung
-                    </li>
-                    <li>eine Messe
-                    </li>
-                    <li>den Bibliothekartag
-                    </li>
+                    <li>eine Fortbildung                    </li>
+                    <li>ein Praktikum</li>
+                    <li>eine Fachtagung                    </li>
+                    <li>eine Messe                    </li>
+                    <li>den Bibliothekartag                    </li>
                 </ul>
                 besuchst?<br/>
                 Dann melde dich an und schau, ob du bei einer Fachkollegin oder einem Fachkollegen unterkommen kannst –
@@ -90,7 +87,7 @@
                             <label for="username" class="col-md-4 col-form-label text-md-right">{{ __('Nutzername') }}</label>
 
                             <div class="col-md-6">
-                                <input id="username" type="username" class="form-control @error('username') is-invalid @enderror" name="username" value="{{ old('username') }}" required autocomplete="username">
+                                <input id="username" type="text" class="form-control @error('username') is-invalid @enderror" name="username" value="{{ old('username') }}" required autocomplete="username">
 
                                 @error('username')
                                 <span class="invalid-feedback" role="alert">

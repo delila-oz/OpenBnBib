@@ -9,6 +9,7 @@
                         {{ session('status') }}
                     </div>
                 @endif
+
                 <form action="/profile/{{$user->username}}" enctype="multipart/form-data" method="post">
                     @csrf
                     @method('PATCH')
@@ -33,12 +34,13 @@
                                     <div class="form-group row">
                                         <label for="is_host" class="col-md-4 col-form-label">Möchtest du Gastgeber*in sein?</label>
                                         <p>
-                                            <input type="radio" id="is_host" name="is_host" value="1" checked>
-                                            <label for="is_host">Ja</label><br>
-                                            <input type="radio" id="is_host" name="is_host" value="0" >
-                                            <label for="is_host">Nein</label><br>
+                                            <input type="radio" id="is_hostj" name="is_host" value="j" {{ old('is_host') == 'j' ? 'checked' : '' }}>
+                                            <label for="is_hostj">Ja</label><br>
+                                            <input type="radio" id="is_hostn" name="is_host" value="n" {{ old('is_host') == 'n' ? 'checked' : '' }}>
+                                            <label for="is_hostn">Nein</label><br>
                                         </p>
                                     </div>
+
                                     <div class="form-group row">
                                         <label for="plz" class="col-md-4 col-form-label">Deine Postleitzahl</label>
                                         <p>
@@ -46,7 +48,9 @@
                                         </p>
                                     </div>
 
-{{--                                Latitude und Longitude Felder werden über Leaflet befüllt und nicht angezeigt.--}}
+
+                                    {{-- Latitude und Longitude Felder werden über Leaflet befüllt und nicht angezeigt.--}}
+
                                     <div class="row">
                                         <div class="col-md-6">
                                             <div class="form-group">
@@ -72,24 +76,18 @@
                                     <div class="form-group row">
                                         <label for="is_host" class="col-md-4 col-form-label">Bitte wähle dein Geschlecht</label>
                                         <p>
-                                            <input type="radio" id="female" name="gender" value="female">
+                                            <input type="radio" id="gender" name="gender" value="f" {{ (old('gender') == 'm') ? 'checked' : ''}}>
                                             <label for="female">Weiblich</label><br>
-                                            <input type="radio" id="male" name="gender" value="male">
+                                            <input type="radio" id="gender" name="gender" value="m" {{ (old('gender') == 'm') ? 'checked' : ''}}>
                                             <label for="male">Männlich</label><br>
-                                            <input type="radio" id="other" name="gender" value="other" checked>
-                                            <label for="other">Divers</label>
+                                            <input type="radio" id="gender" name="gender" value="x" {{ (old('gender') == 'x') ? 'checked' : ''}}>
+                                            <label for="other">keine Angabe</label>
+
                                         </p>
                                     </div>
+
                                     <div class="form-group row">
-                                        <label for="birthday" class="col-md-4 col-form-label">Dein Geburtsdatum</label>
-                                        <p>
-                                            <input type="date" id="birthday" name="birthday" value="{{old('birthday') ?? $user->profile->birthday}}">
-                                        </p>
-                                        <input type="checkbox" id="no_birthday" name="no_birthday" value="no_birthday">
-                                        <label for="no_birthday">Mein Alter soll im Profil nicht angezeigt werden.</label><br>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label for="profile_title" class="col-md-4 col-form-label">Deine Kurzbeschreibung (dieser Text wird in der Suche angezeigt)</label>
+                                        <label for="profile_title" class="col-md-4 col-form-label">Deine Kurzbeschreibung (dieser Text wird in der Trefferliste der Suche angezeigt)</label>
                                         <input id="profile_title"
                                                type="text"
                                                class="form-control{{$errors->has('profile_title') ? 'is-invalid' : ''}}"
@@ -174,13 +172,13 @@
                                             </span>
                                         @endif
                                     </div>
+
                                     <div class="row">
                                         <div class="col">
                                             <div class="form-check">
                                                 <label class="form-check-label">
                                                     <input type="checkbox" class="form-check-input" name="offer_as_host[]" value="WLAN"
-                                                           @if(is_array(old('offer_as_host')) && in_array("WLAN", old('$user->profile->offer_as_host'))) checked @endif>WLAN
-{{--                                                    {{ (is_array(old('offer_as_host')) and in_array("WLAN", old('offer_as_host'))) ? ' checked' : '' }}>WLAN--}}
+                                                        {{ (is_array(old('offer_as_host')) and in_array('WLAN', old('offer_as_host'))) ? 'checked' : '' }}/>WLAN
                                                 </label>
                                             </div>
                                             <div class="form-check">
@@ -261,20 +259,17 @@
                                     </div>
                                     <div class="form-group row">
                                         <label for="accommodation_description" class="col-md-4 col-form-label">Rauchen?</label>
-                                        <div class="form-check">
-                                            <label class="form-check-label" for="accepts_smoker">
-                                                <input type="radio" class="form-check-input" id="radio1" name="accepts_smoker" value="option1" checked>Ja
-                                            </label>
+                                        <div class="form-check form-check-inline">
+                                            <input type="radio" class="form-check-input" id="accepts_smoker_j" name="accepts_smoker" value="j">
+                                            <label class="form-check-label" for="accepts_smoker_j">Ja</label>
                                         </div>
-                                        <div class="form-check">
-                                            <label class="form-check-label" for="accepts_smoker">
-                                                <input type="radio" class="form-check-input" id="radio2" name="accepts_smoker" value="option2">Nein
-                                            </label>
+                                        <div class="form-check  form-check-inline">
+                                            <input type="radio" class="form-check-input" id="accepts_smoker_n" name="accepts_smoker" value="n">
+                                            <label class="form-check-label" for="accepts_smoker_n">Nein</label>
                                         </div>
-                                        <div class="form-check">
-                                            <label class="form-check-label" for="accepts_smoker">
-                                                <input type="radio" class="form-check-input" id="radio3" name="accepts_smoker" value="option3" >Ja, auf Balkon/Terrasse
-                                            </label>
+                                        <div class="form-check form-check-inline">
+                                            <input type="radio" class="form-check-input" id="accepts_smoker_b" name="accepts_smoker" value="b" >
+                                            <label class="form-check-label" for="accepts_smoker_b">Nur außerhalb des Hauses</label>
                                         </div>
                                     </div>
                                     <div class="form-group row">
@@ -295,7 +290,7 @@
                                     </div>
                                     <div class="form-group row">
                                         <label for="accommodation_type" class="col-md-4 col-form-label">Meine Übernachtungsmöglichkeit</label>
-                                        <select multiple class="form-control" id="accommodation_type" name="accommodation_type">
+                                        <select multiple class="form-control" id="accommodation_type" name="accommodation_type[]">
                                             <option>eigenes Bett</option>
                                             <option>Etagenbett</option>
                                             <option>(Schlaf-)Sofa</option>
@@ -311,7 +306,7 @@
                                     </div>
                                     <div class="form-group row">
                                         <label for="pets" class="col-md-4 col-form-label">Haustiere</label>
-                                        <select multiple class="form-control" id="pets" name="pets">
+                                        <select multiple class="form-control" id="pets" name="pets[]">
                                             <option>Keins</option>
                                             <option>Hund</option>
                                             <option>Katze</option>
@@ -320,7 +315,7 @@
                                     </div>
                                     <div class="form-group row">
                                         <label for="accessibility" class="col-md-4 col-form-label">Barrierefreiheit</label>
-                                        <select multiple class="form-control" id="accessibility" name="accessibility">
+                                        <select multiple class="form-control" id="accessibility" name="accessibility[]">
                                             <option>Die Wohnung ist rollstuhlgerecht.</option>
                                             <option>Ein Aufzug ist vorhanden.</option>
                                             <option>Der Zugang ist barrierefrei.</option>
@@ -352,24 +347,24 @@
                                     </div>
                                     <div class="form-group row">
                                         <label for="professional_offer" class="col-md-4 col-form-label">Was ich anbieten kann</label>
-                                        <select multiple class="form-control" id="professional_offer" name="professional_offer">
+                                        <select multiple class="form-control" id="professional_offer" name="professional_offer[]">
                                             <option>Führung örtliche ÖB</option>
                                             <option>Führung örtliche WB</option>
                                             <option>Führung örtliches Archiv</option>
                                             <option>Führung örtliches Museum</option>
                                             <option>Führung örtliche Informationseinrichtung</option>
                                         </select>
-<!--                                            <input id="professional_offer"
-                                               type="text"
-                                               class="form-control{{$errors->has('professional_offer') ? 'is-invalid' : ''}}"
-                                               name="professional_offer"
-                                               value="{{old('professional_offer') ?? $user->profile->accommodation_other}}"
-                                               autocomplete="accommodation_other" autofocus>
-                                        @if ($errors->has('professional_offer'))
-                                            <span class="invalid-feedback" role="alert">
-                                            <strong>{{$errors->first('professional_offer')}}</strong>
-                                            </span>
-                                        @endif-->
+{{--                                        <input id="professional_offer"--}}
+{{--                                               type="text"--}}
+{{--                                               class="form-control{{$errors->has('professional_offer') ? 'is-invalid' : ''}}"--}}
+{{--                                               name="professional_offer"--}}
+{{--                                               value="{{old('professional_offer') ?? $user->profile->accommodation_other}}"--}}
+{{--                                               autocomplete="accommodation_other" autofocus>--}}
+{{--                                        @if ($errors->has('professional_offer'))--}}
+{{--                                            <span class="invalid-feedback" role="alert">--}}
+{{--                                            <strong>{{$errors->first('professional_offer')}}</strong>--}}
+{{--                                            </span>--}}
+{{--                                            @endif-->--}}
                                     </div>
                                 </div>
 
@@ -381,6 +376,7 @@
                         </div>
                     </div>
                 </form>
+
             </div>
         </div>
     </div>
@@ -406,6 +402,12 @@
             integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
             crossorigin=""></script>
     <script>
+        var myIcon = L.icon({
+            iconUrl: '/storage/marker.svg',
+            iconSize: [38, 95],
+            iconAnchor: [22, 94],
+            popupAnchor: [-3, -76],
+        });
         var mapCenter = [{{ request('latitude', config('leaflet.map_center_latitude')) }}, {{ request('longitude', config('leaflet.map_center_longitude')) }}];
         {{--var map = L.map('mapid').setView(mapCenter, {{ config('leaflet.zoom_level') }});--}}
         var map = L.map('mapid').setView([51.4567, 10.5033], 5);
@@ -415,13 +417,18 @@
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         }).addTo(map);
 
-        var marker = L.marker([{{$user->profile->latitude ?? 50.9446596}}, {{$user->profile->longitude ?? 10.3226091}}],{
-                        draggable: true
-        }).addTo(map);
+        var marker = L.marker(
+            [{{$user->profile->latitude ?? 50.9446596}},
+                {{$user->profile->longitude ?? 10.3226091}}],
+            {
+                icon: myIcon,
+                draggable: 'true',
+            }
+        ).addTo(map);
 
         marker.on('dragend', function (e) {
-        document.getElementById('latitude').value = marker.getLatLng().lat;
-        document.getElementById('longitude').value = marker.getLatLng().lng;
-    });
-</script>
+            document.getElementById('latitude').value = marker.getLatLng().lat;
+            document.getElementById('longitude').value = marker.getLatLng().lng;
+        });
+    </script>
 @endpush

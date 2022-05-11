@@ -13,9 +13,13 @@ class Profile extends Model
      */
     protected $guarded = [];
 
-    //TODO macht, dass jeder Array Eintrag einzeln statt [a, b, c] angezeigt wird; castet das Array in JSON wie im Model beschrieben
+    //macht, dass jeder Array Eintrag einzeln statt [a, b, c] angezeigt wird; castet das Array in JSON wie im Model beschrieben
     protected $casts = [
-      'offer_as_host' => 'array'
+      'offer_as_host' => 'array',
+        'pets' => 'array',
+        'accessibility' => 'array',
+        'professional_offer' => 'array',
+        'accommodation_type' => 'array'
     ];
 
     public function profileImage()

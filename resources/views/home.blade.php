@@ -10,7 +10,7 @@
                     </div>
                 @endif
                 {{-- vorher nur $user->profile->image, aber wegen defaultBelegung des Profilbilds hier auf Methode zurückgreifen--}}
-                <img src="{{$user->profile->profileImage()}}" class="rounded-circle mw-50" height="150px" width="150px" alt="Profilbild">
+                    <img src="{{$user->profile->profileImage()}}" class="rounded-circle mw-50" height="150px" width="150px" alt="Profilbild">
             </div>
 
             <div class="col-sm-9">
@@ -19,7 +19,7 @@
                 </h2>
                 <p>
                     @isset($user->profile->is_host)
-                    @if($user->profile->is_host===true)
+                    @if($user->profile->is_host=="j")
                         Du bist Gastgeber:in!
                     @else
                         Du bist im Moment nicht Gastgeber:in!
@@ -28,7 +28,7 @@
                 </p>
                 <b>Deine Kurzbeschreibung</b> <br>
                 {{ $user->profile->profile_title ?? 'Kein Text'}} <br>
-                <button type="button" class="btn btn-outline-info">
+                <button type="button" class="btn btn-primary">
                             <a href="/profile/{{ $user->username }}/edit">Ändere dein Profil!</a>
                 </button>
 
